@@ -1,0 +1,16 @@
+# Append to /srv/dailydose/Caddyfile (the shared edge Caddy), then reload:
+#   sudo docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
+
+shanuva.com {
+	encode zstd gzip
+	reverse_proxy shanuva-web:80
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		-Server
+	}
+}
+
+www.shanuva.com {
+	redir https://shanuva.com{uri} permanent
+}
